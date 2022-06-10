@@ -91,13 +91,14 @@ module.exports = function fight({ _links, arena }) {
       return other.x === x && y < other.y
     }
   })
-  // if (nearPlayers.length > 0 && !canThrow) {
-  //   if (wasHit) {
-  //     //where is that player?
-  //     nearPlayers[0].
-  //   }
-  //   return MOVES.TurnLeft
-  // }
+
+  if (nearPlayers.length > 0 && !canThrow) {
+    if (wasHit) {
+      //where is that player?
+
+    }
+    return MOVES.TurnLeft
+  }
 
 
 
