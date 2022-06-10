@@ -1,3 +1,22 @@
+const example = {
+  "_links": {
+    "self": {
+      "href": "https://foo.com"
+    }
+  },
+  "arena": {
+    "dims": [4, 3],
+    "state": {
+      "https://foo.com": {
+        "x": 0,
+        "y": 0,
+        "direction": "N",
+        "wasHit": false,
+        "score": 0
+      }
+    }
+  }
+}
 
 const DIRECTIONS = {
   North: "N",
@@ -15,7 +34,9 @@ const MOVES = {
 
 module.exports = function fight({ _links, arena }) {
   const myUrl = _links.self.href
+  console.log("🚀 ~ file: fight.js ~ line 37 ~ fight ~ myUrl", myUrl)
   const myState = arena.state[myUrl]
+  console.log("🚀 ~ file: fight.js ~ line 39 ~ fight ~ myState", myState)
   const [arenaX, arenaY] = arena.dims
   const othersState = Object.entries(arena.state).filter(([key]) => key !== myUrl).map(([key, val]) => {
     return { ...val, player: key }
@@ -53,9 +74,6 @@ module.exports = function fight({ _links, arena }) {
 
   // Target the player, 
   const THROW_DISTANCE = 3
-  const nearPlayers = othersState.filter((other) => {
-    return other.x - x <= THROW_DISTANCE || other.y - y <= THROW_DISTANCE
-  })
   const canThrow = nearPlayers.some(other => {
     if (direction === DIRECTIONS.East) {
       return other.y === y && other.x > x && other.x - x <= THROW_DISTANCE
@@ -69,6 +87,9 @@ module.exports = function fight({ _links, arena }) {
     if (direction === DIRECTIONS.South) {
       return other.x === x && y < other.y && y - other.y <= THROW_DISTANCE
     }
+  })
+  const nearPlayers = othersState.filter((other) => {
+    return Math.abs(other.x - x) <= THROW_DISTANCE || other.y - y <= THROW_DISTANCE
   })
 
   if (canThrow) {
