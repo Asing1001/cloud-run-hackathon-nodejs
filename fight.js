@@ -95,7 +95,7 @@ module.exports = function fight({ _links, arena }) {
   if (nearPlayers.length > 0 && !canThrow) {
     if (wasHit) {
       //where is that player?
-
+      return MOVES.Forward
     }
     return MOVES.TurnLeft
   }
