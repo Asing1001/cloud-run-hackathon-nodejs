@@ -94,7 +94,8 @@ module.exports = function fight({ _links, arena }) {
   })
 
   const canMove = () => {
-    let newx, newy
+    let newx = x
+    let newy = y
     if (direction === DIRECTIONS.North) {
       newy = y - 1
     }
