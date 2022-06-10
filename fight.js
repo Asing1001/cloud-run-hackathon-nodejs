@@ -36,8 +36,11 @@ module.exports = function fight({ _links, arena }) {
   console.log("🚀 ~ file: fight.js ~ line 37 ~ fight ~ myUrl", myUrl)
   const myState = arena.state[myUrl]
   console.log("🚀 ~ file: fight.js ~ line 39 ~ fight ~ myState", myState)
-  const [arenaX, arenaY] = arena.dims
-  console.log("🚀 ~ file: fight.js ~ line 41 ~ fight ~ arena", arenaX, arenaY)
+  const [arenaXLength, arenaYLength] = arena.dims
+  console.log("🚀 ~ file: fight.js ~ line 41 ~ fight ~ arena", arena.dims)
+  const arenaX = arenaXLength - 1
+  const arenaY = arenaYLength - 1
+  console.log("🚀 ~ file: fight.js ~ line 42 ~ fight ~ arenaX", arenaX, arenaY)
 
   const othersState = Object.entries(arena.state).filter(([key]) => key !== myUrl).map(([key, val]) => {
     return { ...val, player: key }
@@ -78,6 +81,7 @@ module.exports = function fight({ _links, arena }) {
   const nearPlayers = othersState.filter((other) => {
     return (Math.abs(other.x - x) <= THROW_DISTANCE && other.y === y) || (Math.abs(other.y - y) <= THROW_DISTANCE && other.x === x)
   })
+  console.log("Nearplayers count ~ ", nearPlayers.length)
   const canThrow = nearPlayers.some(other => {
     if (direction === DIRECTIONS.East) {
       return other.y === y && other.x > x
@@ -93,7 +97,7 @@ module.exports = function fight({ _links, arena }) {
     }
   })
 
-  const canMove = () => {
+  const moveConflict = () => {
     let newx = x
     let newy = y
     if (direction === DIRECTIONS.North) {
@@ -112,30 +116,30 @@ module.exports = function fight({ _links, arena }) {
     const conflict = nearPlayers.some((other) => {
       return other.x === newx && other.y === newy
     })
-    console.log("🚀 ~ file: fight.js ~ line 100 ~ canMove ~ direction", direction)
-    console.log('nex position', newx, newy);
-    console.log("🚀 ~ file: fight.js ~ line 116 ~ conflict ~ conflict", conflict)
-    return !conflict
+    console.log("moveConflict ~ direction", direction)
+    console.log('moveConflict nex position', newx, newy);
+    console.log("moveConflict ~ conflict", conflict)
+    return conflict
   }
 
 
   if (canThrow) {
     if (wasHit) {
       //where is that player?
-      if (canMove()) {
-        return MOVES.Forward
+      if (moveConflict()) {
+        return MOVES.TurnLeft
       }
-      return MOVES.TurnLeft
+      return MOVES.Forward
     }
     return MOVES.Throw;
   } else {
-    if (nearPlayers.length > 0) {
+    if (nearPlayers.length > 0 && !wasHit) {
       return MOVES.TurnLeft
     }
-    if (canMove()) {
-      return MOVES.Forward
+    if (moveConflict()) {
+      return MOVES.TurnLeft
     }
-    return MOVES.TurnLeft
+    return MOVES.Forward
   }
 }
 
