@@ -118,7 +118,14 @@ module.exports = function fight({ _links, arena }) {
     if (direction === DIRECTIONS.West) {
       newx = x - 1
     }
+
     console.log(newx, newy);
+    const conflict = othersState.some((other) => {
+      return other.x === newx && other.y === newy
+    })
+    if (conflict) {
+      return MOVES.TurnLeft
+    }
     return (MOVES.Forward)
   }
 }
