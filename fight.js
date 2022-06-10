@@ -91,27 +91,33 @@ module.exports = function fight({ _links, arena }) {
       return other.x === x && y < other.y
     }
   })
-  if (wasHit) {
+  // if (nearPlayers.length > 0 && !canThrow) {
+  //   if (wasHit) {
+  //     //where is that player?
+  //     nearPlayers[0].
+  //   }
+  //   return MOVES.TurnLeft
+  // }
 
-  }
 
 
   if (canThrow) {
     return MOVES.Throw;
   } else {
-    if (direction = DIRECTIONS.North) {
-      y = y + 1
+    let newx, newy
+    if (direction === DIRECTIONS.North) {
+      newy = y + 1
     }
     if (direction === DIRECTIONS.South) {
-      y = y - 1
+      newy = y - 1
     }
     if (direction === DIRECTIONS.East) {
-      x = x + 1
+      newx = x + 1
     }
     if (direction === DIRECTIONS.West) {
-      x = x - 1
+      newx = x - 1
     }
-    console.log(x, y);
+    console.log(newx, newy);
     return (MOVES.Forward)
   }
 }
