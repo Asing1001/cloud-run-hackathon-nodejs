@@ -40,8 +40,13 @@ const MOVES = {
   TurnRight: "R"
 }
 
-const myUrl = 'https://hackathon-1120-wtpnck3waq-uc.a.run.app/'
 app.post('/', function (req, res) {
+  const myUrl = req.body._links.self.href
+  const originSend = res.send
+  res.send = (...args) => {
+    console.log('Send Response: ', args);
+    res.send(...args)
+  }
   // console.log(JSON.stringify(req.body));
   const myState = req.body.arena.state[myUrl]
   console.log("🚀 ~ file: web.js ~ line 47 ~ myState", JSON.stringify(myState))
