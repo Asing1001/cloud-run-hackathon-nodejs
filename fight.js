@@ -113,6 +113,7 @@ module.exports = function fight({ _links, arena }) {
     const conflict = nearPlayers.some((other) => {
       return other.x === newx && other.y === newy
     })
+    console.log("🚀 ~ file: fight.js ~ line 116 ~ conflict ~ conflict", conflict)
     return !conflict
   }
 
