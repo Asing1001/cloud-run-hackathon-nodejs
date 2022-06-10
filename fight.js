@@ -92,19 +92,7 @@ module.exports = function fight({ _links, arena }) {
     }
   })
 
-  if (nearPlayers.length > 0 && !canThrow) {
-    if (wasHit) {
-      //where is that player?
-      return MOVES.Forward
-    }
-    return MOVES.TurnLeft
-  }
-
-
-
-  if (canThrow) {
-    return MOVES.Throw;
-  } else {
+  const canMove = () => {
     let newx, newy
     if (direction === DIRECTIONS.North) {
       newy = y + 1
@@ -123,9 +111,26 @@ module.exports = function fight({ _links, arena }) {
     const conflict = othersState.some((other) => {
       return other.x === newx && other.y === newy
     })
-    if (conflict) {
+    return !conflict
+  }
+
+
+  if (canThrow) {
+    if (wasHit) {
+      //where is that player?
+      if (canMove()) {
+        return MOVES.Forward
+      }
       return MOVES.TurnLeft
     }
-    return (MOVES.Forward)
+    return MOVES.Throw;
+  } else {
+    if (nearPlayers.length > 0) {
+      return MOVES.TurnLeft
+    }
+    if (canMove())
+      return MOVES.Forward
   }
+  return (MOVES.TurnLeft)
 }
+
