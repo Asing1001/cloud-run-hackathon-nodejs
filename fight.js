@@ -74,26 +74,27 @@ module.exports = function fight({ _links, arena }) {
 
   // Target the player, 
   const THROW_DISTANCE = 3
+  const nearPlayers = othersState.filter((other) => {
+    return Math.abs(other.x - x) <= THROW_DISTANCE || Math.abs(other.y - y) <= THROW_DISTANCE
+  })
   const canThrow = nearPlayers.some(other => {
     if (direction === DIRECTIONS.East) {
-      return other.y === y && other.x > x && other.x - x <= THROW_DISTANCE
+      return other.y === y && other.x > x
     }
     if (direction === DIRECTIONS.West) {
-      return other.y === y && x > other.x && x - other.x <= THROW_DISTANCE
+      return other.y === y && x > other.x
     }
     if (direction === DIRECTIONS.North) {
-      return other.x === x && y > other.y && y - other.y <= THROW_DISTANCE
+      return other.x === x && y > other.y
     }
     if (direction === DIRECTIONS.South) {
-      return other.x === x && y < other.y && y - other.y <= THROW_DISTANCE
+      return other.x === x && y < other.y
     }
   })
   if (wasHit) {
 
   }
-  const nearPlayers = othersState.filter((other) => {
-    return Math.abs(other.x - x) <= THROW_DISTANCE || other.y - y <= THROW_DISTANCE
-  })
+
 
   if (canThrow) {
     return MOVES.Throw;
