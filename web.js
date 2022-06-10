@@ -110,7 +110,31 @@ app.post('/', function (req, res) {
   }
   // faceToCorrectDirection}
 
-  res.send(MOVES.Throw);
+  // Target the player, 
+  const THROW_DISTANCE = 3
+  const nearPlayers = othersState.filter((other) => {
+    return other.x - x <= THROW_DISTANCE || other.y - y <= THROW_DISTANCE
+  })
+  const canThrow = nearPlayers.some(other => {
+    if (direction === DIRECTIONS.East) {
+      return other.y === y && other.x > x && other.x - x <= THROW_DISTANCE
+    }
+    if (direction === DIRECTIONS.West) {
+      return other.y === y && x > other.x && x - other.x <= THROW_DISTANCE
+    }
+    if (direction === DIRECTIONS.North) {
+      return other.x === x && y > other.y && y - other.y <= THROW_DISTANCE
+    }
+    if (direction === DIRECTIONS.South) {
+      return other.x === x && y > other.y && y - other.y <= THROW_DISTANCE
+    }
+  })
+
+  if (canThrow) {
+    res.send(MOVES.Throw);
+  } else {
+    res.send(MOVES.Forward)
+  }
 });
 
 app.listen(process.env.PORT || 8080);
