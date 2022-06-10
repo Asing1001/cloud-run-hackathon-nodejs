@@ -126,7 +126,7 @@ app.post('/', function (req, res) {
       return other.x === x && y > other.y && y - other.y <= THROW_DISTANCE
     }
     if (direction === DIRECTIONS.South) {
-      return other.x === x && y > other.y && y - other.y <= THROW_DISTANCE
+      return other.x === x && y < other.y && y - other.y <= THROW_DISTANCE
     }
   })
 
