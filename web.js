@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const fight = require('./fight')
 
 app.use(bodyParser.json());
 
@@ -40,101 +41,11 @@ const MOVES = {
   TurnRight: "R"
 }
 
-function logResponseBody(req, res, next) {
-  var oldWrite = res.write,
-    oldEnd = res.end;
-
-  var chunks = [];
-
-  res.write = function (chunk) {
-    chunks.push(new Buffer(chunk));
-
-    oldWrite.apply(res, arguments);
-  };
-
-  res.end = function (chunk) {
-    if (chunk)
-      chunks.push(new Buffer(chunk));
-
-    var body = Buffer.concat(chunks).toString('utf8');
-    console.log(req.path, body);
-
-    oldEnd.apply(res, arguments);
-  };
-
-  next();
-}
-
-app.use(logResponseBody);
-
 app.post('/', function (req, res) {
-  const myUrl = req.body._links.self.href
-  // console.log(JSON.stringify(req.body));
-  const myState = req.body.arena.state[myUrl]
-  console.log("🚀 ~ file: web.js ~ line 47 ~ myState", JSON.stringify(myState))
-  const [arenaX, arenaY] = req.body.arena.dims
-  console.log("🚀 ~ file: web.js ~ line 49 ~ arenaY", arenaY)
-  console.log("🚀 ~ file: web.js ~ line 49 ~ arenaX", arenaX)
-  const othersState = Object.entries(req.body.arena.state).filter(([key]) => key !== myUrl).map(([key, val]) => {
-    return { ...val, player: key }
-  })
-  console.log("🚀 ~ file: web.js ~ line 54 ~ othersState ~ othersState", othersState.length)
-  const { x, y, direction, wasHit, score } = myState
-  // 1. Face to the right direction (Do not stuck)
-  // 2. Attack if there is someone in my direction
-  // 3. If no one close, move
-  // faceToCorrectDirection()
-  //function faceToCorrectDirection() {
-  if (y === 0 && direction === DIRECTIONS.North) {
-    if (x === 0) {
-      return res.send(MOVES.TurnRight)
-    }
+  const result = fight(req.body)
+  console.log('fight', result);
+  res.send(result)
 
-    return res.send(MOVES.TurnLeft)
-  }
-
-  if (y === arenaY && direction === DIRECTIONS.South) {
-    if (x === 0) {
-      return res.send(MOVES.TurnLeft)
-    }
-
-    return res.send(MOVES.TurnRight)
-  }
-
-  if (x === 0 && direction === DIRECTIONS.West) {
-    return res.send(MOVES.TurnLeft)
-  }
-
-  if (x === arenaX && direction === DIRECTIONS.East) {
-    return res.send(MOVES.TurnLeft)
-  }
-  // faceToCorrectDirection}
-
-  // Target the player, 
-  const THROW_DISTANCE = 3
-  const nearPlayers = othersState.filter((other) => {
-    return other.x - x <= THROW_DISTANCE || other.y - y <= THROW_DISTANCE
-  })
-  const canThrow = nearPlayers.some(other => {
-    if (direction === DIRECTIONS.East) {
-      return other.y === y && other.x > x && other.x - x <= THROW_DISTANCE
-    }
-    if (direction === DIRECTIONS.West) {
-      return other.y === y && x > other.x && x - other.x <= THROW_DISTANCE
-    }
-    if (direction === DIRECTIONS.North) {
-      return other.x === x && y > other.y && y - other.y <= THROW_DISTANCE
-    }
-    if (direction === DIRECTIONS.South) {
-      return other.x === x && y < other.y && y - other.y <= THROW_DISTANCE
-    }
-  })
-
-  if (canThrow) {
-    res.send(MOVES.Throw);
-  } else {
-    res.send(MOVES.Forward)
-  }
 });
 
 app.listen(process.env.PORT || 8080);
