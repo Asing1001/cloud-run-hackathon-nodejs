@@ -88,6 +88,9 @@ module.exports = function fight({ _links, arena }) {
       return other.x === x && y < other.y && y - other.y <= THROW_DISTANCE
     }
   })
+  if (wasHit) {
+
+  }
   const nearPlayers = othersState.filter((other) => {
     return Math.abs(other.x - x) <= THROW_DISTANCE || other.y - y <= THROW_DISTANCE
   })
@@ -95,6 +98,19 @@ module.exports = function fight({ _links, arena }) {
   if (canThrow) {
     return MOVES.Throw;
   } else {
+    if (direction = DIRECTIONS.North) {
+      y = y + 1
+    }
+    if (direction === DIRECTIONS.South) {
+      y = y - 1
+    }
+    if (direction === DIRECTIONS.East) {
+      x = x + 1
+    }
+    if (direction === DIRECTIONS.West) {
+      x = x - 1
+    }
+    console.log(x, y);
     return (MOVES.Forward)
   }
 }
