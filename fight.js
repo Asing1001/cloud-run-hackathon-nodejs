@@ -31,14 +31,14 @@ const MOVES = {
   TurnLeft: "L",
   TurnRight: "R"
 }
-
+const bossUrl = 'https://hackathon-1120-wtpnck3waq-uc.a.run.app/'
 module.exports = function fight({ _links, arena }) {
   const myUrl = _links.self.href
   console.log("🚀 ~ file: fight.js ~ line 37 ~ fight ~ myUrl", myUrl)
   const myState = arena.state[myUrl]
   console.log("🚀 ~ file: fight.js ~ line 39 ~ fight ~ myState", myState)
   const [arenaX, arenaY] = arena.dims
-  const othersState = Object.entries(arena.state).filter(([key]) => key !== myUrl).map(([key, val]) => {
+  const othersState = Object.entries(arena.state).filter(([key]) => key !== myUrl && key !== bossUrl).map(([key, val]) => {
     return { ...val, player: key }
   })
   const { x, y, direction, wasHit, score } = myState
