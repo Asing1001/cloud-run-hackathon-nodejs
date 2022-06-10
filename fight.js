@@ -75,7 +75,7 @@ module.exports = function fight({ _links, arena }) {
   // Target the player, 
   const THROW_DISTANCE = 3
   const nearPlayers = othersState.filter((other) => {
-    return Math.abs(other.x - x) <= THROW_DISTANCE || Math.abs(other.y - y) <= THROW_DISTANCE
+    return (Math.abs(other.x - x) <= THROW_DISTANCE && other.y === y) || (Math.abs(other.y - y) <= THROW_DISTANCE && other.x === x)
   })
   const canThrow = nearPlayers.some(other => {
     if (direction === DIRECTIONS.East) {
