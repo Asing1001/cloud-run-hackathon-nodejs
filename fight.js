@@ -109,10 +109,11 @@ module.exports = function fight({ _links, arena }) {
       newx = x - 1
     }
 
-    console.log('nex position', newx, newy);
     const conflict = nearPlayers.some((other) => {
       return other.x === newx && other.y === newy
     })
+    console.log("🚀 ~ file: fight.js ~ line 100 ~ canMove ~ direction", direction)
+    console.log('nex position', newx, newy);
     console.log("🚀 ~ file: fight.js ~ line 116 ~ conflict ~ conflict", conflict)
     return !conflict
   }
