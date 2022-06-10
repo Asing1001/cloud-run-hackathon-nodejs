@@ -12,9 +12,7 @@ app.get('/', function (req, res) {
 app.post('/', function (req, res) {
   const result = fight(req.body)
   console.log('result', result);
-  // res.send(result)
-  res.send('R')
-
+  res.send(result)
 });
 
 app.listen(process.env.PORT || 8080);
