@@ -108,7 +108,7 @@ module.exports = function fight({ _links, arena }) {
       newx = x - 1
     }
 
-    console.log(newx, newy);
+    console.log('nex position', newx, newy);
     const conflict = othersState.some((other) => {
       return other.x === newx && other.y === newy
     })
