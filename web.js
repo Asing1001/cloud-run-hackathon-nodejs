@@ -90,7 +90,7 @@ app.post('/', function (req, res) {
       return res.send(MOVES.TurnRight)
     }
 
-    if (x === areaX) {
+    if (x === arenaX) {
       return res.send(MOVES.TurnLeft)
     }
   }
@@ -100,7 +100,7 @@ app.post('/', function (req, res) {
       return res.send(MOVES.TurnLeft)
     }
 
-    if (x === areaX) {
+    if (x === arenaX) {
       return res.send(MOVES.TurnRight)
     }
   }
@@ -112,7 +112,7 @@ app.post('/', function (req, res) {
   if (x === arenaX && direction === DIRECTIONS.East) {
     return res.send(MOVES.TurnLeft)
   }
-  // }
+  // faceToCorrectDirection}
 
   res.send(MOVES.Throw);
 });
