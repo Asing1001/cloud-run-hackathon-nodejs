@@ -42,13 +42,16 @@ const MOVES = {
 
 const myUrl = 'https://hackathon-1120-wtpnck3waq-uc.a.run.app/'
 app.post('/', function (req, res) {
-  console.log(JSON.stringify(req.body));
+  // console.log(JSON.stringify(req.body));
   const myState = req.body.arena.state[myUrl]
+  console.log("🚀 ~ file: web.js ~ line 47 ~ myState", JSON.stringify(myState))
   const [arenaX, arenaY] = req.body.arena.dims
+  console.log("🚀 ~ file: web.js ~ line 49 ~ arenaY", arenaY)
+  console.log("🚀 ~ file: web.js ~ line 49 ~ arenaX", arenaX)
   const othersState = Object.entries(req.body.arena.state).filter(([key]) => key !== myUrl).map(([key, val]) => {
-    console.log(key, val);
     return { ...val, player: key }
   })
+  console.log("🚀 ~ file: web.js ~ line 54 ~ othersState ~ othersState", othersState.length)
   const { x, y, direction, wasHit, score } = myState
   // 1. Face to the right direction (Do not stuck)
   // 2. Attack if there is someone in my direction
