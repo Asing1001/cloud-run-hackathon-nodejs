@@ -40,13 +40,35 @@ const MOVES = {
   TurnRight: "R"
 }
 
+function logResponseBody(req, res, next) {
+  var oldWrite = res.write,
+    oldEnd = res.end;
+
+  var chunks = [];
+
+  res.write = function (chunk) {
+    chunks.push(new Buffer(chunk));
+
+    oldWrite.apply(res, arguments);
+  };
+
+  res.end = function (chunk) {
+    if (chunk)
+      chunks.push(new Buffer(chunk));
+
+    var body = Buffer.concat(chunks).toString('utf8');
+    console.log(req.path, body);
+
+    oldEnd.apply(res, arguments);
+  };
+
+  next();
+}
+
+app.use(logResponseBody);
+
 app.post('/', function (req, res) {
   const myUrl = req.body._links.self.href
-  const originSend = res.send
-  res.send = (...args) => {
-    console.log('Send Response: ', args);
-    res.send(...args)
-  }
   // console.log(JSON.stringify(req.body));
   const myState = req.body.arena.state[myUrl]
   console.log("🚀 ~ file: web.js ~ line 47 ~ myState", JSON.stringify(myState))
