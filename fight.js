@@ -128,9 +128,10 @@ module.exports = function fight({ _links, arena }) {
     if (nearPlayers.length > 0) {
       return MOVES.TurnLeft
     }
-    if (canMove())
+    if (canMove()) {
       return MOVES.Forward
+    }
+    return MOVES.TurnLeft
   }
-  return (MOVES.TurnLeft)
 }
 
