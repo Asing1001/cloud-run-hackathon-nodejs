@@ -90,9 +90,7 @@ app.post('/', function (req, res) {
       return res.send(MOVES.TurnRight)
     }
 
-    if (x === arenaX) {
-      return res.send(MOVES.TurnLeft)
-    }
+    return res.send(MOVES.TurnLeft)
   }
 
   if (y === arenaY && direction === DIRECTIONS.South) {
@@ -100,9 +98,7 @@ app.post('/', function (req, res) {
       return res.send(MOVES.TurnLeft)
     }
 
-    if (x === arenaX) {
-      return res.send(MOVES.TurnRight)
-    }
+    return res.send(MOVES.TurnRight)
   }
 
   if (x === 0 && direction === DIRECTIONS.West) {
