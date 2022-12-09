@@ -60,11 +60,15 @@ module.exports = function fight({ _links, arena }) {
   }
 
   if (y === arenaY && direction === DIRECTIONS.South) {
-    if (x === 0) {
-      return MOVES.TurnLeft
+    // if (x === 0) {
+    //   return MOVES.TurnLeft
+    // }
+
+    if (x === arenaX) {
+      return MOVES.TurnRight
     }
 
-    return MOVES.TurnRight
+    return MOVES.TurnLeft
   }
 
   if (x === 0 && direction === DIRECTIONS.West) {
