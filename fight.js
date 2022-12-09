@@ -128,12 +128,15 @@ module.exports = function fight({ _links, arena }) {
     return conflict
   }
 
+  if (nearPlayers.length === 0) {
+    wasHitCount = 0
+  }
 
   if (canThrow) {
     if (wasHit) {
       wasHitCount++
-      if (wasHitCount > 5) {
-        wasHitCount = 0
+      if (wasHitCount > 3) {
+        wasHitCount = wasHitCount - 2
         //where is that player?
         if (moveConflict()) {
           return MOVES.TurnLeft
