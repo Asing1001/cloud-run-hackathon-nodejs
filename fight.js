@@ -31,6 +31,8 @@ const MOVES = {
   TurnLeft: "L",
   TurnRight: "R"
 }
+
+let wasHitCount = 0
 module.exports = function fight({ _links, arena }) {
   const myUrl = _links.self.href
   console.log("🚀 ~ file: fight.js ~ line 37 ~ fight ~ myUrl", myUrl)
@@ -129,11 +131,15 @@ module.exports = function fight({ _links, arena }) {
 
   if (canThrow) {
     if (wasHit) {
-      //where is that player?
-      if (moveConflict()) {
-        return MOVES.TurnLeft
+      wasHitCount++
+      if (wasHitCount > 5) {
+        wasHitCount = 0
+        //where is that player?
+        if (moveConflict()) {
+          return MOVES.TurnLeft
+        }
+        return MOVES.Forward
       }
-      return MOVES.Forward
     }
     return MOVES.Throw;
   } else {
